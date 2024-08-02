@@ -49,7 +49,7 @@ object ReservationDao {
             val statement = connection.prepareStatement(
                 """
                     UPDATE reservation 
-                    SET status = 'DONE'
+                    SET status = 'WAITING_CONFIRMATION'
                     WHERE date = ? AND ? >= endTime AND status = 'ACCEPTED'
                 """.trimIndent()
             )
@@ -366,7 +366,7 @@ object ReservationDao {
                         b.barbershopName
                     FROM reservation r
                     INNER JOIN barber b ON r.barberEmail = b.email
-                    WHERE clientEmail = ? AND status = 'DONE'
+                    WHERE clientEmail = ? AND (status = 'DONE_SUCCESS' OR status = 'DONE_FAILURE')
                 """.trimIndent()
             )
             statement.setString(1, clientEmail)
@@ -512,7 +512,7 @@ object ReservationDao {
                         c.surname AS clientSurname
                     FROM reservation r
                     INNER JOIN client c ON r.clientEmail = c.email
-                    WHERE barberEmail = ? AND status = 'DONE'
+                    WHERE barberEmail = ? AND (status = 'DONE_SUCCESS' OR status = 'DONE_FAILURE')
                 """.trimIndent()
             )
             statement.setString(1, barberEmail)
@@ -588,6 +588,55 @@ object ReservationDao {
         return requests
     }
 
+    fun getBarberConfirmations(
+        barberEmail: String
+    ): List<ExtendedReservationWithClient> {
+        var connection: Connection? = null
+        val requests = mutableListOf<ExtendedReservationWithClient>()
+        try {
+            connection = DatabaseFactory.dataSource.connection
+            val statement = connection.prepareStatement(
+                """
+                    SELECT 
+                        r.id AS reservationId,
+                        r.clientEmail,
+                        r.barberEmail,
+                        r.date,
+                        r.startTime,
+                        r.endTime,
+                        r.status,
+                        c.id AS clientId,
+                        c.name AS clientName,
+                        c.surname AS clientSurname
+                    FROM reservation r
+                    INNER JOIN client c ON r.clientEmail = c.email
+                    WHERE barberEmail = ? AND status = 'WAITING_CONFIRMATION'
+                """.trimIndent()
+            )
+            statement.setString(1, barberEmail)
+            val resultSet = statement.executeQuery()
+            while (resultSet.next()) {
+                requests.add(ExtendedReservationWithClient(
+                    reservationId = resultSet.getInt("reservationId"),
+                    clientEmail = resultSet.getString("clientEmail"),
+                    barberEmail = resultSet.getString("barberEmail"),
+                    date = resultSet.getString("date"),
+                    startTime = resultSet.getString("startTime"),
+                    endTime = resultSet.getString("endTime"),
+                    status = resultSet.getString("status"),
+                    clientId = resultSet.getInt("clientId"),
+                    clientName = resultSet.getString("clientName"),
+                    clientSurname = resultSet.getString("clientSurname")
+                ))
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            connection?.close()
+        }
+        return requests
+    }
+
     fun acceptReservationRequest(reservationId: Int) {
         var connection: Connection? = null
         try {
@@ -620,6 +669,27 @@ object ReservationDao {
                 """.trimIndent()
             )
             statement.setInt(1, reservationId)
+            statement.executeUpdate()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            connection?.close()
+        }
+    }
+
+    fun updateDoneReservationStatus(reservationId: Int, status: String) {
+        var connection: Connection? = null
+        try {
+            connection = DatabaseFactory.dataSource.connection
+            val statement = connection.prepareStatement(
+                """
+                    UPDATE reservation
+                    SET status = ?
+                    WHERE id = ?
+                """.trimIndent()
+            )
+            statement.setString(1, status)
+            statement.setInt(2, reservationId)
             statement.executeUpdate()
         } catch (e: Exception) {
             e.printStackTrace()

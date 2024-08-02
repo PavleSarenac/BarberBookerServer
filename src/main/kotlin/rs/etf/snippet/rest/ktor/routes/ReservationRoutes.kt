@@ -124,6 +124,12 @@ fun Route.reservationRouting() {
             call.respond(requests)
         }
 
+        get("getBarberConfirmations") {
+            val barberEmail = call.request.queryParameters["barberEmail"]!!
+            val requests = ReservationDao.getBarberConfirmations(barberEmail)
+            call.respond(requests)
+        }
+
         get("acceptReservationRequest") {
             val reservationId = call.request.queryParameters["reservationId"]!!.toInt()
             ReservationDao.acceptReservationRequest(reservationId)
@@ -138,6 +144,16 @@ fun Route.reservationRouting() {
             ReservationDao.rejectReservationRequest(reservationId)
             call.respondText(
                 "Reservation request was successfully rejected.",
+                status = HttpStatusCode.OK
+            )
+        }
+
+        get("updateDoneReservationStatus") {
+            val reservationId = call.request.queryParameters["reservationId"]!!.toInt()
+            val status = call.request.queryParameters["status"]!!
+            ReservationDao.updateDoneReservationStatus(reservationId, status)
+            call.respondText(
+                "Done reservation status was successfully updated.",
                 status = HttpStatusCode.OK
             )
         }
