@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Reservation(
-    val id: Long = 0,
+    val id: Int = 0,
     var clientEmail: String,
     var barberEmail: String,
     var date: String,

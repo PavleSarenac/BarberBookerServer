@@ -1,6 +1,7 @@
 package rs.etf.snippet.rest.ktor.daos
 
 import rs.etf.snippet.rest.ktor.DatabaseFactory
+import rs.etf.snippet.rest.ktor.entities.structures.ExtendedBarberWithAverageGrade
 import rs.etf.snippet.rest.ktor.entities.tables.Barber
 import java.sql.Connection
 
@@ -45,6 +46,185 @@ object BarberDao {
         } finally {
             connection?.close()
         }
+    }
+
+    fun getBarberByEmail(email: String): Barber? {
+        var connection: Connection? = null
+        var barber: Barber? = null
+        try {
+            connection = DatabaseFactory.dataSource.connection
+            val statement = connection.prepareStatement(
+                """
+                    SELECT *
+                    FROM barber
+                    WHERE email = ?
+                """.trimIndent()
+            )
+            statement.setString(1, email)
+            val resultSet = statement.executeQuery()
+            if (resultSet.next()) {
+                barber = Barber(
+                    id = resultSet.getInt("id"),
+                    email = resultSet.getString("email"),
+                    password = resultSet.getString("password"),
+                    barbershopName = resultSet.getString("barbershopName"),
+                    price = resultSet.getDouble("price"),
+                    phone = resultSet.getString("phone"),
+                    country = resultSet.getString("country"),
+                    city = resultSet.getString("city"),
+                    municipality = resultSet.getString("municipality"),
+                    address = resultSet.getString("address"),
+                    workingDays = resultSet.getString("workingDays"),
+                    workingHours = resultSet.getString("workingHours")
+                )
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            connection?.close()
+        }
+        return barber
+    }
+
+    fun getBarberByEmailAndPassword(email: String, hashedPassword: String): Barber? {
+        var connection: Connection? = null
+        var barber: Barber? = null
+        try {
+            connection = DatabaseFactory.dataSource.connection
+            val statement = connection.prepareStatement(
+                """
+                    SELECT *
+                    FROM barber
+                    WHERE email = ? AND password = ?
+                """.trimIndent()
+            )
+            statement.setString(1, email)
+            statement.setString(2, hashedPassword)
+            val resultSet = statement.executeQuery()
+            if (resultSet.next()) {
+                barber = Barber(
+                    id = resultSet.getInt("id"),
+                    email = resultSet.getString("email"),
+                    password = resultSet.getString("password"),
+                    barbershopName = resultSet.getString("barbershopName"),
+                    price = resultSet.getDouble("price"),
+                    phone = resultSet.getString("phone"),
+                    country = resultSet.getString("country"),
+                    city = resultSet.getString("city"),
+                    municipality = resultSet.getString("municipality"),
+                    address = resultSet.getString("address"),
+                    workingDays = resultSet.getString("workingDays"),
+                    workingHours = resultSet.getString("workingHours")
+                )
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            connection?.close()
+        }
+        return barber
+    }
+
+    fun updateBarberProfile(
+        email: String,
+        barbershopName: String,
+        price: Double,
+        phone: String,
+        country: String,
+        city: String,
+        municipality: String,
+        address: String,
+        workingDays: String,
+        workingHours: String
+    ) {
+        var connection: Connection? = null
+        try {
+            connection = DatabaseFactory.dataSource.connection
+            val statement = connection.prepareStatement(
+                """
+                    UPDATE barber 
+                    SET barbershopName = ?, 
+                        price = ?, 
+                        phone = ?, 
+                        country = ?, 
+                        city = ?, 
+                        municipality = ?, 
+                        address = ?, 
+                        workingDays = ?, 
+                        workingHours = ?
+                    WHERE email = ?
+                """.trimIndent()
+            )
+            statement.setString(1, barbershopName)
+            statement.setDouble(2, price)
+            statement.setString(3, phone)
+            statement.setString(4, country)
+            statement.setString(5, city)
+            statement.setString(6, municipality)
+            statement.setString(7, address)
+            statement.setString(8, workingDays)
+            statement.setString(9, workingHours)
+            statement.setString(10, email)
+            statement.executeUpdate()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            connection?.close()
+        }
+    }
+
+    fun getSearchResults(query: String): List<ExtendedBarberWithAverageGrade> {
+        var connection: Connection? = null
+        val searchResults = mutableListOf<ExtendedBarberWithAverageGrade>()
+        val queryParameters = query.split(" ")
+        try {
+            connection = DatabaseFactory.dataSource.connection
+            queryParameters.forEach {
+                val statement = connection.prepareStatement(
+                    """
+                    SELECT b.*, COALESCE(AVG(r.grade), 0.00) AS averageGrade
+                    FROM barber b
+                    LEFT JOIN review r ON b.email = r.barberEmail
+                    WHERE LOWER(b.barbershopName) LIKE LOWER(?)
+                        OR LOWER(b.country) LIKE LOWER(?)
+                        OR LOWER(b.city) LIKE LOWER(?)
+                        OR LOWER(b.municipality) LIKE LOWER(?)
+                        OR LOWER(b.address) LIKE LOWER(?)
+                    GROUP BY b.email
+                """.trimIndent()
+                )
+                statement.setString(1, it)
+                statement.setString(2, it)
+                statement.setString(3, it)
+                statement.setString(4, it)
+                statement.setString(5, it)
+
+                val resultSet = statement.executeQuery()
+                while (resultSet.next()) {
+                    val barber = ExtendedBarberWithAverageGrade(
+                        id = resultSet.getInt("id"),
+                        email = resultSet.getString("email"),
+                        password = resultSet.getString("password"),
+                        barbershopName = resultSet.getString("barbershopName"),
+                        price = resultSet.getDouble("price"),
+                        phone = resultSet.getString("phone"),
+                        country = resultSet.getString("country"),
+                        city = resultSet.getString("city"),
+                        municipality = resultSet.getString("municipality"),
+                        address = resultSet.getString("address"),
+                        workingDays = resultSet.getString("workingDays"),
+                        workingHours = resultSet.getString("workingHours"),
+                        averageGrade = resultSet.getFloat("averageGrade")
+                    )
+                    searchResults.add(barber)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            connection?.close()
+        }
+        return searchResults.distinct()
     }
 
 }

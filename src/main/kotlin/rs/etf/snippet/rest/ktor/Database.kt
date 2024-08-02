@@ -11,7 +11,7 @@ object DatabaseFactory {
         password = "root"
         driverClassName = "com.mysql.cj.jdbc.Driver"
         maximumPoolSize = 10
-        isAutoCommit = false
+        isAutoCommit = true
         transactionIsolation = "TRANSACTION_REPEATABLE_READ"
     }
 

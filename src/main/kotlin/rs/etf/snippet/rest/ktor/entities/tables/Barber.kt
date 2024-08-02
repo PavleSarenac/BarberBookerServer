@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Barber(
-    val id: Long = 0,
+    val id: Int = 0,
     var email: String,
     var password: String,
     var barbershopName: String,

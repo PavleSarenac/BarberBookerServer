@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ExtendedBarberWithAverageGrade(
-    var id: Long,
+    var id: Int,
     var email: String,
     var password: String,
     var barbershopName: String,
