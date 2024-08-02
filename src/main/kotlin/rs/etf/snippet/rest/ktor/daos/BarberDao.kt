@@ -193,11 +193,11 @@ object BarberDao {
                     GROUP BY b.email
                 """.trimIndent()
                 )
-                statement.setString(1, it)
-                statement.setString(2, it)
-                statement.setString(3, it)
-                statement.setString(4, it)
-                statement.setString(5, it)
+                statement.setString(1, "%$it%")
+                statement.setString(2, "%$it%")
+                statement.setString(3, "%$it%")
+                statement.setString(4, "%$it%")
+                statement.setString(5, "%$it%")
 
                 val resultSet = statement.executeQuery()
                 while (resultSet.next()) {
