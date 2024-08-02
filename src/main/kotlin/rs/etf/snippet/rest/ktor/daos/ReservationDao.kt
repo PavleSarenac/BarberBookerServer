@@ -232,7 +232,7 @@ object ReservationDao {
             val resultSet = statement.executeQuery()
             while (resultSet.next()) {
                 requests.add(ExtendedReservationWithBarber(
-                    reservationId = resultSet.getInt("id"),
+                    reservationId = resultSet.getInt("reservationId"),
                     clientEmail = resultSet.getString("clientEmail"),
                     barberEmail = resultSet.getString("barberEmail"),
                     date = resultSet.getString("date"),
@@ -279,7 +279,7 @@ object ReservationDao {
             val resultSet = statement.executeQuery()
             while (resultSet.next()) {
                 requests.add(ExtendedReservationWithBarber(
-                    reservationId = resultSet.getInt("id"),
+                    reservationId = resultSet.getInt("reservationId"),
                     clientEmail = resultSet.getString("clientEmail"),
                     barberEmail = resultSet.getString("barberEmail"),
                     date = resultSet.getString("date"),
@@ -326,7 +326,7 @@ object ReservationDao {
             val resultSet = statement.executeQuery()
             while (resultSet.next()) {
                 requests.add(ExtendedReservationWithBarber(
-                    reservationId = resultSet.getInt("id"),
+                    reservationId = resultSet.getInt("reservationId"),
                     clientEmail = resultSet.getString("clientEmail"),
                     barberEmail = resultSet.getString("barberEmail"),
                     date = resultSet.getString("date"),
@@ -373,7 +373,7 @@ object ReservationDao {
             val resultSet = statement.executeQuery()
             while (resultSet.next()) {
                 requests.add(ExtendedReservationWithBarber(
-                    reservationId = resultSet.getInt("id"),
+                    reservationId = resultSet.getInt("reservationId"),
                     clientEmail = resultSet.getString("clientEmail"),
                     barberEmail = resultSet.getString("barberEmail"),
                     date = resultSet.getString("date"),
@@ -421,7 +421,7 @@ object ReservationDao {
             val resultSet = statement.executeQuery()
             while (resultSet.next()) {
                 requests.add(ExtendedReservationWithClient(
-                    reservationId = resultSet.getInt("id"),
+                    reservationId = resultSet.getInt("reservationId"),
                     clientEmail = resultSet.getString("clientEmail"),
                     barberEmail = resultSet.getString("barberEmail"),
                     date = resultSet.getString("date"),
@@ -470,7 +470,7 @@ object ReservationDao {
             val resultSet = statement.executeQuery()
             while (resultSet.next()) {
                 requests.add(ExtendedReservationWithClient(
-                    reservationId = resultSet.getInt("id"),
+                    reservationId = resultSet.getInt("reservationId"),
                     clientEmail = resultSet.getString("clientEmail"),
                     barberEmail = resultSet.getString("barberEmail"),
                     date = resultSet.getString("date"),
@@ -519,7 +519,7 @@ object ReservationDao {
             val resultSet = statement.executeQuery()
             while (resultSet.next()) {
                 requests.add(ExtendedReservationWithClient(
-                    reservationId = resultSet.getInt("id"),
+                    reservationId = resultSet.getInt("reservationId"),
                     clientEmail = resultSet.getString("clientEmail"),
                     barberEmail = resultSet.getString("barberEmail"),
                     date = resultSet.getString("date"),
@@ -568,7 +568,7 @@ object ReservationDao {
             val resultSet = statement.executeQuery()
             while (resultSet.next()) {
                 requests.add(ExtendedReservationWithClient(
-                    reservationId = resultSet.getInt("id"),
+                    reservationId = resultSet.getInt("reservationId"),
                     clientEmail = resultSet.getString("clientEmail"),
                     barberEmail = resultSet.getString("barberEmail"),
                     date = resultSet.getString("date"),
