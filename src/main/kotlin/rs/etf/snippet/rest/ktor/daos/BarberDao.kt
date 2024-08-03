@@ -24,7 +24,8 @@ object BarberDao {
                         municipality,
                         address,
                         workingDays,
-                        workingHours
+                        workingHours,
+                        fcmToken
                     )
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
                 """.trimIndent()
@@ -40,6 +41,7 @@ object BarberDao {
             statement.setString(9, barber.address)
             statement.setString(10, barber.workingDays)
             statement.setString(11, barber.workingHours)
+            statement.setString(12, barber.fcmToken)
             statement.executeUpdate()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -75,7 +77,8 @@ object BarberDao {
                     municipality = resultSet.getString("municipality"),
                     address = resultSet.getString("address"),
                     workingDays = resultSet.getString("workingDays"),
-                    workingHours = resultSet.getString("workingHours")
+                    workingHours = resultSet.getString("workingHours"),
+                    fcmToken = resultSet.getString("fcmToken")
                 )
             }
         } catch (e: Exception) {
@@ -114,7 +117,8 @@ object BarberDao {
                     municipality = resultSet.getString("municipality"),
                     address = resultSet.getString("address"),
                     workingDays = resultSet.getString("workingDays"),
-                    workingHours = resultSet.getString("workingHours")
+                    workingHours = resultSet.getString("workingHours"),
+                    fcmToken = resultSet.getString("fcmToken")
                 )
             }
         } catch (e: Exception) {
@@ -214,6 +218,7 @@ object BarberDao {
                         address = resultSet.getString("address"),
                         workingDays = resultSet.getString("workingDays"),
                         workingHours = resultSet.getString("workingHours"),
+                        fcmToken = resultSet.getString("fcmToken"),
                         averageGrade = resultSet.getFloat("averageGrade")
                     )
                     searchResults.add(barber)

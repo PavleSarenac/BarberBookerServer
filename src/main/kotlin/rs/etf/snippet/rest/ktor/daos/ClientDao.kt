@@ -17,7 +17,8 @@ object ClientDao {
                         email, 
                         password,
                         name,
-                        surname
+                        surname,
+                        fcmToken
                     )
                     VALUES (?, ?, ?, ?)
                 """.trimIndent()
@@ -26,6 +27,7 @@ object ClientDao {
             statement.setString(2, client.password)
             statement.setString(3, client.name)
             statement.setString(4, client.surname)
+            statement.setString(5, client.fcmToken)
             statement.executeUpdate()
         } catch (e: Exception) {
             e.printStackTrace()
@@ -54,7 +56,8 @@ object ClientDao {
                     email = resultSet.getString("email"),
                     password = resultSet.getString("password"),
                     name = resultSet.getString("name"),
-                    surname = resultSet.getString("surname")
+                    surname = resultSet.getString("surname"),
+                    fcmToken = resultSet.getString("fcmToken")
                 )
             }
         } catch (e: Exception) {
@@ -86,7 +89,8 @@ object ClientDao {
                     email = resultSet.getString("email"),
                     password = resultSet.getString("password"),
                     name = resultSet.getString("name"),
-                    surname = resultSet.getString("surname")
+                    surname = resultSet.getString("surname"),
+                    fcmToken = resultSet.getString("fcmToken")
                 )
             }
         } catch (e: Exception) {

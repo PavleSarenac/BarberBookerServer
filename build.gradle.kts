@@ -1,6 +1,6 @@
 val ktor_version: String by project
 val kotlin_version: String by project
-val logback_version: String by project
+val logback_version: String = "1.4.12"
 
 plugins {
     kotlin("jvm") version "1.7.22"
@@ -31,4 +31,6 @@ dependencies {
     implementation("com.zaxxer:HikariCP:5.0.1")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+
+    implementation("com.google.firebase:firebase-admin:9.2.0")
 }

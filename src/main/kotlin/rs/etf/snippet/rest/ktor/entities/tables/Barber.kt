@@ -15,5 +15,6 @@ data class Barber(
     var municipality: String,
     var address: String,
     var workingDays: String,
-    var workingHours: String
+    var workingHours: String,
+    var fcmToken: String
 )
