@@ -146,7 +146,7 @@ object ReviewDao {
                         b.barbershopName
                     FROM review r
                     INNER JOIN barber b ON b.email = r.barberEmail
-                    WHERE clientEmail = :clientEmail
+                    WHERE clientEmail = ?
                 """.trimIndent()
             )
             statement.setString(1, clientEmail)
