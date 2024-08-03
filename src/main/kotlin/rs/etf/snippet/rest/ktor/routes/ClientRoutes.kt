@@ -6,6 +6,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import rs.etf.snippet.rest.ktor.daos.ClientDao
+import rs.etf.snippet.rest.ktor.entities.structures.FcmTokenUpdateData
 import rs.etf.snippet.rest.ktor.entities.tables.Client
 
 fun Route.clientRouting() {
@@ -47,6 +48,18 @@ fun Route.clientRouting() {
             ClientDao.updateClientProfile(email, name, surname)
             call.respondText(
                 "Client profile successfully updated.",
+                status = HttpStatusCode.OK
+            )
+        }
+
+        post("updateFcmToken") {
+            val fcmTokenUpdateData = call.receive<FcmTokenUpdateData>()
+            ClientDao.updateFcmToken(
+                email = fcmTokenUpdateData.email,
+                fcmToken = fcmTokenUpdateData.fcmToken
+            )
+            call.respondText(
+                "Fcm token was successfully updated.",
                 status = HttpStatusCode.OK
             )
         }

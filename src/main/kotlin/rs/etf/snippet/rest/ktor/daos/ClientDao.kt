@@ -123,4 +123,28 @@ object ClientDao {
         }
     }
 
+    fun updateFcmToken(
+        email: String,
+        fcmToken: String
+    ) {
+        var connection: Connection? = null
+        try {
+            connection = DatabaseFactory.dataSource.connection
+            val statement = connection.prepareStatement(
+                """
+                    UPDATE client 
+                    SET fcmToken = ?
+                    WHERE email = ?
+                """.trimIndent()
+            )
+            statement.setString(1, fcmToken)
+            statement.setString(2, email)
+            statement.executeUpdate()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        } finally {
+            connection?.close()
+        }
+    }
+
 }

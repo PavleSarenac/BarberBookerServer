@@ -6,6 +6,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import rs.etf.snippet.rest.ktor.daos.BarberDao
+import rs.etf.snippet.rest.ktor.entities.structures.FcmTokenUpdateData
 import rs.etf.snippet.rest.ktor.entities.tables.Barber
 
 fun Route.barberRouting() {
@@ -75,6 +76,18 @@ fun Route.barberRouting() {
             val query = call.request.queryParameters["query"]!!
             val searchResults = BarberDao.getSearchResults(query)
             call.respond(searchResults)
+        }
+
+        post("updateFcmToken") {
+            val fcmTokenUpdateData = call.receive<FcmTokenUpdateData>()
+            BarberDao.updateFcmToken(
+                email = fcmTokenUpdateData.email,
+                fcmToken = fcmTokenUpdateData.fcmToken
+            )
+            call.respondText(
+                "Fcm token was successfully updated.",
+                status = HttpStatusCode.OK
+            )
         }
     }
 }
