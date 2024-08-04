@@ -50,7 +50,7 @@ object ReservationDao {
                 """
                     UPDATE reservation 
                     SET status = 'WAITING_CONFIRMATION'
-                    WHERE date = ? AND ? >= endTime AND status = 'ACCEPTED'
+                    WHERE "date" = ? AND ? >= endTime AND status = 'ACCEPTED'
                 """.trimIndent()
             )
             statement.setString(1, currentDate)
@@ -74,7 +74,7 @@ object ReservationDao {
                 """
                     UPDATE reservation 
                     SET status = 'REJECTED'
-                    WHERE 'date' = ? AND ? >= endTime AND status = 'PENDING'
+                    WHERE "date" = ? AND ? >= endTime AND status = 'PENDING'
                 """.trimIndent()
             )
             statement.setString(1, currentDate)
@@ -99,7 +99,7 @@ object ReservationDao {
             val statement = connection.prepareStatement(
                 """
                     SELECT * FROM reservation
-                    WHERE barberEmail = ? AND 'date' = ? AND startTime = ? AND status = 'ACCEPTED'
+                    WHERE barberEmail = ? AND "date" = ? AND startTime = ? AND status = 'ACCEPTED'
                 """.trimIndent()
             )
             statement.setString(1, barberEmail)
@@ -137,7 +137,7 @@ object ReservationDao {
             val statement = connection.prepareStatement(
                 """
                     SELECT * FROM reservation
-                    WHERE clientEmail = ? AND 'date' = ? AND startTime = ? AND status != 'REJECTED'
+                    WHERE clientEmail = ? AND "date" = ? AND startTime = ? AND status != 'REJECTED'
                 """.trimIndent()
             )
             statement.setString(1, clientEmail)
@@ -177,7 +177,7 @@ object ReservationDao {
                 """
                     SELECT * FROM reservation
                     WHERE clientEmail = ? AND barberEmail = ?
-                    AND 'date' = ? AND startTime = ? AND status = 'REJECTED'
+                    AND "date" = ? AND startTime = ? AND status = 'REJECTED'
                 """.trimIndent()
             )
             statement.setString(1, clientEmail)

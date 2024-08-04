@@ -12,7 +12,7 @@ import rs.etf.snippet.rest.ktor.entities.structures.NotificationData
 
 fun Route.notificationRouting() {
     route("notification") {
-        get("sendNotification") {
+        post("sendNotification") {
             val notificationData = call.receive<NotificationData>()
             val fcmMessage = Message.builder()
                 .setNotification(
