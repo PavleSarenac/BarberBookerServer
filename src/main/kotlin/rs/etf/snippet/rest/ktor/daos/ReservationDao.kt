@@ -74,7 +74,7 @@ object ReservationDao {
                 """
                     UPDATE reservation 
                     SET status = 'REJECTED'
-                    WHERE date = ? AND ? >= endTime AND status = 'PENDING'
+                    WHERE date <= ? AND ? >= endTime AND status = 'PENDING'
                 """.trimIndent()
             )
             statement.setString(1, currentDate)
