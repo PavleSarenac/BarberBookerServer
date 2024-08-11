@@ -21,6 +21,8 @@ fun Route.notificationRouting() {
                         .setBody(notificationData.body)
                         .build()
                 )
+                .putData("route", notificationData.route)
+                .putData("channelId", notificationData.channelId)
                 .setToken(notificationData.token)
                 .build()
             FirebaseMessaging.getInstance().send(fcmMessage)

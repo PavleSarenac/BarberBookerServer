@@ -6,5 +6,7 @@ import kotlinx.serialization.Serializable
 data class NotificationData(
     var token: String,
     var title: String,
-    var body: String
+    var body: String,
+    var route: String,
+    var channelId: String
 )
