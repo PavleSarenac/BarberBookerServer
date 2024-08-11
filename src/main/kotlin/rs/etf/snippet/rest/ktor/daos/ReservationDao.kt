@@ -411,7 +411,8 @@ object ReservationDao {
                         r.status,
                         c.id AS clientId,
                         c.name AS clientName,
-                        c.surname AS clientSurname
+                        c.surname AS clientSurname,
+                        c.fcmToken AS fcmToken
                     FROM reservation r
                     INNER JOIN client c ON r.clientEmail = c.email
                     WHERE barberEmail = ? AND status = 'PENDING'
@@ -430,7 +431,8 @@ object ReservationDao {
                     status = resultSet.getString("status"),
                     clientId = resultSet.getInt("clientId"),
                     clientName = resultSet.getString("clientName"),
-                    clientSurname = resultSet.getString("clientSurname")
+                    clientSurname = resultSet.getString("clientSurname"),
+                    fcmToken = resultSet.getString("fcmToken")
                 ))
             }
         } catch (e: Exception) {

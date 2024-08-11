@@ -14,5 +14,6 @@ data class ExtendedReservationWithClient(
 
     var clientId: Int,
     var clientName: String,
-    var clientSurname: String
+    var clientSurname: String,
+    var fcmToken: String = ""
 )
