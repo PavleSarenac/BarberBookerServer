@@ -1,4 +1,4 @@
-<h1>BarberBooker</h1>
+<h1>BarberBookerServer</h1>
 
 <h3>Prerequisites:</h3>
 <ul>
